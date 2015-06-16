@@ -15,7 +15,8 @@ angular.module('workspaceApp')
         })
         .then( function() {
           // Logged in, redirect to home
-          $location.path('/');
+          // $location.path('/');
+          $location.path('/dashboard');
         })
         .catch( function(err) {
           $scope.errors.other = err.message;
