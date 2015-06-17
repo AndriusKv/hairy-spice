@@ -1,0 +1,33 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+<div ng-controller="DashboardCtrl">
+    <header class="hero-unit" id="banner">
+        <div class="container">
+            <h1>Dashboard</h1>
+            <button class="btn btn-success" ng-click="togglePoolCreation()">Create New Poll</button>
+            <button class="btn btn-info" ng-click="togglePoolManage()">Manage Polls</button>
+        </div>
+    </header>
+    <div class="container" ng-if="showNewPoll">
+        <div class="row">
+            <div class="new-poll-container">
+                <h2 class="h2 text-center">New Poll</h2>
+                <div class="form-group">
+                    <label for="poll-name">Question</label>
+                    <input type="text" class="form-control" id="poll-name" placeholder="type your question here">
+                </div>
+                <div class="form-group">
+                    <div class="container option-btn-container">
+                        <span class="input-label">Options</span>
+                        <button class="btn btn-default btn-xs">More Options</button>
+                    </div>
+                    <input type="text" class="form-control option-input" placeholder="enter poll option">
+                    <input type="text" class="form-control option-input" placeholder="enter poll option">
+                </div>
+                <button class="btn btn-success">Create</button>
+            </div>
+        </div>
+    </div>
+    <div class="container" ng-if="showPollManage">
+        <div class="h1">TODO</div>
+    </div>
+</div>

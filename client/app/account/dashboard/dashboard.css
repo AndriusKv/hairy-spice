@@ -1,0 +1,20 @@
+.new-poll-container {
+    width: 50%;
+    min-width: 320px;
+    margin: 0 auto;
+}
+.option-btn-container {
+    width: 100%;
+    padding: 0;
+    margin-bottom: 4px;
+}
+.input-label {
+    float: left;
+    font-weight: bold;
+}
+.option-btn-container .btn {
+    float: right;
+}
+.option-input {
+    margin-bottom: 4px;
+}
