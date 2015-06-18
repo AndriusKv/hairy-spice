@@ -9,25 +9,31 @@
     </header>
     <div class="container" ng-if="showNewPoll">
         <div class="row">
-            <div class="new-poll-container">
+            <div class="poll-container">
                 <h2 class="h2 text-center">New Poll</h2>
                 <div class="form-group">
                     <label for="poll-name">Question</label>
-                    <input type="text" class="form-control" id="poll-name" placeholder="type your question here">
+                    <input type="text" class="form-control" id="poll-name" placeholder="type your question here" ng-model="pollQuestion" required>
                 </div>
                 <div class="form-group">
-                    <div class="container option-btn-container">
+                    <div class="container option-container">
                         <span class="input-label">Options</span>
-                        <button class="btn btn-default btn-xs">More Options</button>
+                        <button class="btn btn-default btn-xs" ng-click="addOption()">More Options</button>
                     </div>
-                    <input type="text" class="form-control option-input" placeholder="enter poll option">
-                    <input type="text" class="form-control option-input" placeholder="enter poll option">
+                    <input type="text" class="form-control option-input" placeholder="enter poll option"
+                        ng-repeat="option in options">
                 </div>
-                <button class="btn btn-success">Create</button>
+                <button class="btn btn-success" ng-click="createPoll(pollQuestion)">Create</button>
             </div>
         </div>
     </div>
     <div class="container" ng-if="showPollManage">
-        <div class="h1">TODO</div>
+        <div class="poll-container">
+                <h2 class="h2 text-center">Your created polls</h2>
+                <div class="container option-container created-poll" ng-repeat="poll in createdPolls track by $index">
+                    <span class="input-label">{{ poll.question }}</span>
+                    <button class="btn btn-danger" ng-click="deleteCreatedPoll($index)">Delete</button>
+                </div>
+        </div>
     </div>
 </div>

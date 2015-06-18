@@ -1,9 +1,9 @@
-.new-poll-container {
+.poll-container {
     width: 50%;
     min-width: 320px;
     margin: 0 auto;
 }
-.option-btn-container {
+.option-container {
     width: 100%;
     padding: 0;
     margin-bottom: 4px;
@@ -12,9 +12,17 @@
     float: left;
     font-weight: bold;
 }
-.option-btn-container .btn {
+.option-container .btn {
     float: right;
 }
 .option-input {
     margin-bottom: 4px;
+}
+.created-poll {
+    padding: 4px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+}
+.created-poll .input-label {
+    font-weight: normal;
 }
