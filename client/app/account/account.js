@@ -20,5 +20,9 @@ angular.module('workspaceApp')
         templateUrl: 'app/account/dashboard/dashboard.html',
         controller: 'DashboardCtrl',
         authenticate: true
+      })
+      .when('/:users', {
+        template: 'YOLO',
+        controller: 'DashboardCtrl'
       });
   });

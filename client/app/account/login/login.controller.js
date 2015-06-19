@@ -14,8 +14,8 @@ angular.module('workspaceApp')
           password: $scope.user.password
         })
         .then( function() {
-          // Logged in, redirect to home
-          // $location.path('/');
+          // redirect after login
+          
           $location.path('/dashboard');
         })
         .catch( function(err) {

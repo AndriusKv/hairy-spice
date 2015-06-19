@@ -20,6 +20,19 @@ exports.index = function(req, res) {
   });
 };
 
+exports.names = function(req, res) {
+  User.find({}, '-salt -hashedPassword', function (err, users) {
+    if(err) return res.send(500, err);
+    
+    var userNames = [];
+    for (var i = 0; i < users.length; i++) {
+      if (users[i].role !== "admin") {
+        userNames.push({name: users[i].name, polls: users[i].polls});
+      }
+    }
+    res.json(200, userNames);
+  });
+};
 /**
  * Creates a new user
  */
@@ -92,7 +105,45 @@ exports.me = function(req, res, next) {
     res.json(user);
   });
 };
+exports.getMyPolls = function(req, res, next) {
+  var userId = req.user._id;
+  User.findOne({
+    _id: userId
+  }, '-salt -hashedPassword', function(err, user) { // don't ever give out the password or salt
+    if (err) return next(err);
+    if (!user) return res.json(401);
+    res.json(user.polls);
+  });
+};
+exports.createPoll = function(req, res, next) {
+  var userId = req.user._id;
+  var poll = req.body;
 
+  User.findById(userId, function (err, user) {
+      if (err) return next(err);
+      if (!user) return res.json(401);
+      user.polls.push(poll);
+      user.save(function(err) {
+        if (err) return validationError(res, err);
+        res.send(200);
+      });
+  });
+};
+
+exports.removePoll = function(req, res, next) {
+  var userId = req.user._id;
+  var index = req.params.id;
+
+  User.findById(userId, function (err, user) {
+      if (err) return next(err);
+      if (!user) return res.json(401);
+      user.polls.splice(index, 1);
+      user.save(function(err) {
+        if (err) return validationError(res, err);
+        res.send(200);
+      });
+  });
+};
 /**
  * Authentication callback
  */

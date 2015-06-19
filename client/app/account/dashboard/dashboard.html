@@ -30,9 +30,9 @@
     <div class="container" ng-if="showPollManage">
         <div class="poll-container">
                 <h2 class="h2 text-center">Your created polls</h2>
-                <div class="container option-container created-poll" ng-repeat="poll in createdPolls track by $index">
+                <div class="container option-container created-poll" ng-repeat="poll in createdPolls track by $index" ng-click="showCreatedPoll($index)">
                     <span class="input-label">{{ poll.question }}</span>
-                    <button class="btn btn-danger" ng-click="deleteCreatedPoll($index)">Delete</button>
+                    <button class="btn btn-danger" ng-click="deleteCreatedPoll(poll, $index)">Delete</button>
                 </div>
         </div>
     </div>

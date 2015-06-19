@@ -23,6 +23,11 @@
     border: 1px solid #ddd;
     border-radius: 6px;
 }
+.created-poll:hover {
+    background-color: #ddd;
+    background-color: rgba(221, 221, 221, .8);
+    cursor: pointer;
+}
 .created-poll .input-label {
     font-weight: normal;
 }
