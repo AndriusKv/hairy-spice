@@ -8,15 +8,17 @@
     padding: 0;
     margin-bottom: 4px;
 }
-.input-label {
+.option-container .input-label {
     float: left;
-    font-weight: bold;
 }
 .option-container .btn {
     float: right;
 }
 .option-input {
     margin-bottom: 4px;
+}
+.input-title {
+    font-weight: bold;
 }
 .created-poll {
     padding: 4px;
@@ -28,6 +30,12 @@
     background-color: rgba(221, 221, 221, .8);
     cursor: pointer;
 }
-.created-poll .input-label {
-    font-weight: normal;
+.created-poll-result .input-label {
+    float: left;
+}
+.created-poll-result .input-label:last-child {
+    float: right;
+}
+.poll-vote .input-label {
+    float: none;   
 }

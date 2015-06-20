@@ -1,0 +1,29 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+<div ng-controller="UserPollCtrl">
+    <header class="hero-unit" id="banner">
+        <div class="container">
+            <h1>Dashboard</h1>
+            <button class="btn btn-success" ng-click="togglePollVote()">Vote</button>
+            <button class="btn btn-info" ng-click="togglePoolResults()">Show Results</button>
+        </div>
+    </header>
+    <div class="container" ng-if="showPollVote">
+        <div class="poll-container">
+            <h2 class="h2 text-center">{{ pollQuestion }}</h2>
+            <div class="container option-container poll-vote" ng-repeat="poll in pollOptions track by $index">
+                <input type="radio">
+                <span class="input-label">{{ poll.option }}</span>
+            </div>
+            <button class="btn btn-warning">Vote</button>
+        </div>
+    </div>
+    <div class="container" ng-if="showPollResults">
+        <div class="poll-container">
+            <h2 class="h2 text-center">{{ pollQuestion }}</h2>
+            <div class="container option-container created-poll-result" ng-repeat="poll in pollOptions track by $index">
+                <span class="input-label">{{ poll.option }}</span>
+                <span class="input-label">{{ poll.votes }}</span>
+            </div>
+        </div>
+    </div>
+</div>

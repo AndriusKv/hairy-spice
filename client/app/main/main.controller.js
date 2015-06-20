@@ -4,6 +4,9 @@ angular.module('workspaceApp')
   .controller('MainCtrl', function ($scope, $http) {
     $scope.awesomeThings = [];
 
+    // $routeParams.users = [];
+    // $routeParams.users.push($scope.getCurrentUser().name);
+    
     $http.get('/api/things').success(function(awesomeThings) {
       $scope.awesomeThings = awesomeThings;
     });
