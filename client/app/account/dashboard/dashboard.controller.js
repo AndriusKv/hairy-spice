@@ -120,6 +120,7 @@ angular.module('workspaceApp').controller('DashboardCtrl', function ($scope, $ht
         $scope.pollLink = location.host + $scope.pollPathname;
         $scope.showNewPoll = false;
         $scope.pollCreated = true;
+        $scope.options.length = 2;
         $http.post('/api/users/me/polls', newPoll);
     };
     
