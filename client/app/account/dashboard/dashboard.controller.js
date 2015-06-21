@@ -1,6 +1,6 @@
 "use strict";
 
-angular.module('workspaceApp').controller('DashboardCtrl', function ($scope, $http) {
+angular.module('workspaceApp').controller('DashboardCtrl', function ($scope, $http, Auth) {
     var id = 0;
     
     $scope.showNewPoll = true;
@@ -61,11 +61,7 @@ angular.module('workspaceApp').controller('DashboardCtrl', function ($scope, $ht
     
     $scope.showCreatedPoll = function(index) {
         var poll = $scope.createdPolls[index];
-        
-        // if ($scope.showNewPoll) {
-        //     $scope.showNewPoll = false;
-        // }
-        
+
         if ($scope.showPollManage) {
             $scope.showPollManage = false;
         }
@@ -85,7 +81,8 @@ angular.module('workspaceApp').controller('DashboardCtrl', function ($scope, $ht
     };
     
     $scope.createPoll = function(pollQuestion) {
-        var polls = $scope.createdPolls,
+        var getCurrentUser = Auth.getCurrentUser,
+            polls = $scope.createdPolls,
             question = pollQuestion,
             options = document.querySelectorAll(".option-input"),
             newPoll = {},
@@ -106,7 +103,7 @@ angular.module('workspaceApp').controller('DashboardCtrl', function ($scope, $ht
         }
         
         for (i = 0; i <  polls.length; i++) {
-            console.log(polls[i]);
+            // console.log(polls[i]);
             if (parseInt(polls[i].pollId, 10) > id) {
                 id = parseInt(polls[i].pollId, 10);
             }
@@ -118,7 +115,7 @@ angular.module('workspaceApp').controller('DashboardCtrl', function ($scope, $ht
         
         console.log(newPoll);
         
-        $scope.pollPathname = "/andrius" + "/" + id;
+        $scope.pollPathname = "/" + getCurrentUser().name.toLowerCase() + "/" + id;
         $scope.pollLink = location.host + $scope.pollPathname;
         $scope.showNewPoll = false;
         $scope.pollCreated = true;
