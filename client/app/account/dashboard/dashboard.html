@@ -45,4 +45,11 @@
                 </div>
         </div>
     </div>
+    <div class="container" ng-if="pollCreated">
+        <div class="poll-container">
+                <h2 class="h2 text-center">Congratulations!</h2>
+                <p>Your poll has been created:</p>
+                <a ng-href="{{ pollPathname }}">{{ pollLink }}</a>
+        </div>
+    </div>
 </div>

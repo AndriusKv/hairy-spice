@@ -1,11 +1,14 @@
 "use strict";
 
-angular.module('workspaceApp').controller('DashboardCtrl', function ($scope, $http, $routeParams) {
+angular.module('workspaceApp').controller('DashboardCtrl', function ($scope, $http) {
     var id = 0;
     
     $scope.showNewPoll = true;
     $scope.showPollManage = false;
     $scope.showYourPoll = false;
+    $scope.pollCreated = false;
+    $scope.pollPathname = "";
+    $scope.pollLink = "";
     $scope.pollQuestionInput = "";
     $scope.createdPolls = [];
     $scope.options = [1, 2];
@@ -23,6 +26,13 @@ angular.module('workspaceApp').controller('DashboardCtrl', function ($scope, $ht
         if ($scope.showYourPoll) {
             $scope.showYourPoll = false;
         }
+        
+        if ($scope.pollCreated) {
+            $scope.pollPathname = "";
+            $scope.pollLink = "";
+            $scope.pollCreated = false;
+        }
+        
         $scope.showNewPoll = !$scope.showNewPoll;
     };
       
@@ -33,6 +43,12 @@ angular.module('workspaceApp').controller('DashboardCtrl', function ($scope, $ht
         
         if ($scope.showYourPoll) {
             $scope.showYourPoll = false;
+        }
+        
+        if ($scope.pollCreated) {
+            $scope.pollPathname = "";
+            $scope.pollLink = "";
+            $scope.pollCreated = false;
         }
         
         $scope.showPollManage = !$scope.showPollManage;
@@ -46,9 +62,9 @@ angular.module('workspaceApp').controller('DashboardCtrl', function ($scope, $ht
     $scope.showCreatedPoll = function(index) {
         var poll = $scope.createdPolls[index];
         
-        if ($scope.showNewPoll) {
-            $scope.showNewPoll = false;
-        }
+        // if ($scope.showNewPoll) {
+        //     $scope.showNewPoll = false;
+        // }
         
         if ($scope.showPollManage) {
             $scope.showPollManage = false;
@@ -61,6 +77,7 @@ angular.module('workspaceApp').controller('DashboardCtrl', function ($scope, $ht
         
         console.log($scope.createdPolls[index]);
     };
+    
     $scope.addOption = function() {
         var i = $scope.options[$scope.options.length - 1];
         
@@ -94,11 +111,17 @@ angular.module('workspaceApp').controller('DashboardCtrl', function ($scope, $ht
                 id = parseInt(polls[i].pollId, 10);
             }
         }
+        
         newPoll.pollId = ++id;
         newPoll.question = question;
         newPoll.pollOptions = pollOptions;
         
         console.log(newPoll);
+        
+        $scope.pollPathname = "/andrius" + "/" + id;
+        $scope.pollLink = location.host + $scope.pollPathname;
+        $scope.showNewPoll = false;
+        $scope.pollCreated = true;
         $http.post('/api/users/me/polls', newPoll);
     };
     

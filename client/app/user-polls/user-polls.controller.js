@@ -3,7 +3,7 @@
 angular.module('workspaceApp').controller('UserPollCtrl', function ($scope, $http, $routeParams, $location) {
     var poll = [];
     
-    $scope.showPollVote = false;
+    $scope.showPollVote = true;
     $scope.showPollResults = false;
     $scope.pollQuestion = "";
     $scope.pollOptions = [];
