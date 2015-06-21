@@ -112,6 +112,7 @@ angular.module('workspaceApp').controller('DashboardCtrl', function ($scope, $ht
         newPoll.pollId = ++id;
         newPoll.question = question;
         newPoll.pollOptions = pollOptions;
+        newPoll.whoVoted = [];
         
         console.log(newPoll);
         
