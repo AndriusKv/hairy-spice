@@ -14,6 +14,7 @@ router.get('/user', controller.names);
 router.get('/me/polls', auth.isAuthenticated(), controller.getMyPolls);
 router.post('/me/polls', auth.isAuthenticated(), controller.createPoll);
 router.put('/me/polls/:id', auth.isAuthenticated(), controller.removePoll);
+router.put('/:id', controller.updateVotes);
 router.put('/:id/password', auth.isAuthenticated(), controller.changePassword);
 router.get('/:id', auth.isAuthenticated(), controller.show);
 router.post('/', controller.create);

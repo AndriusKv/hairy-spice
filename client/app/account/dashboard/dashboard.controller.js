@@ -1,7 +1,8 @@
 "use strict";
 
 angular.module('workspaceApp').controller('DashboardCtrl', function ($scope, $http, Auth) {
-    var id = 0;
+    var getCurrentUser = Auth.getCurrentUser,
+        id = 0;
     
     $scope.showNewPoll = true;
     $scope.showPollManage = false;
@@ -15,7 +16,6 @@ angular.module('workspaceApp').controller('DashboardCtrl', function ($scope, $ht
 
     $http.get('/api/users/me/polls').success(function(polls) {
         $scope.createdPolls = polls;
-        console.log($scope.createdPolls);
     });
     
     $scope.togglePollCreation = function() {
@@ -55,7 +55,6 @@ angular.module('workspaceApp').controller('DashboardCtrl', function ($scope, $ht
         
         $http.get('/api/users/me/polls').success(function(polls) {
             $scope.createdPolls = polls;
-            console.log($scope.createdPolls);
         });
     };
     
@@ -71,7 +70,8 @@ angular.module('workspaceApp').controller('DashboardCtrl', function ($scope, $ht
         $scope.pollQuestion = poll.question;
         $scope.pollOptions = poll.pollOptions;
         
-        console.log($scope.createdPolls[index]);
+        $scope.pollPathname = "/" + getCurrentUser().name.toLowerCase() + "/" + poll.pollId;
+        $scope.pollLink = location.host + $scope.pollPathname;
     };
     
     $scope.addOption = function() {
@@ -81,8 +81,7 @@ angular.module('workspaceApp').controller('DashboardCtrl', function ($scope, $ht
     };
     
     $scope.createPoll = function(pollQuestion) {
-        var getCurrentUser = Auth.getCurrentUser,
-            polls = $scope.createdPolls,
+        var polls = $scope.createdPolls,
             question = pollQuestion,
             options = document.querySelectorAll(".option-input"),
             newPoll = {},
@@ -103,7 +102,6 @@ angular.module('workspaceApp').controller('DashboardCtrl', function ($scope, $ht
         }
         
         for (i = 0; i <  polls.length; i++) {
-            // console.log(polls[i]);
             if (parseInt(polls[i].pollId, 10) > id) {
                 id = parseInt(polls[i].pollId, 10);
             }
@@ -113,8 +111,6 @@ angular.module('workspaceApp').controller('DashboardCtrl', function ($scope, $ht
         newPoll.question = question;
         newPoll.pollOptions = pollOptions;
         newPoll.whoVoted = [];
-        
-        console.log(newPoll);
         
         $scope.pollPathname = "/" + getCurrentUser().name.toLowerCase() + "/" + id;
         $scope.pollLink = location.host + $scope.pollPathname;

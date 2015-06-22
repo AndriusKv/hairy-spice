@@ -27,7 +27,7 @@ exports.names = function(req, res) {
     var userNames = [];
     for (var i = 0; i < users.length; i++) {
       if (users[i].role !== "admin") {
-        userNames.push({name: users[i].name, polls: users[i].polls});
+        userNames.push({id: users[i]._id, name: users[i].name, polls: users[i].polls});
       }
     }
     res.json(200, userNames);
@@ -105,6 +105,7 @@ exports.me = function(req, res, next) {
     res.json(user);
   });
 };
+
 exports.getMyPolls = function(req, res, next) {
   var userId = req.user._id;
   User.findOne({
@@ -115,6 +116,7 @@ exports.getMyPolls = function(req, res, next) {
     res.json(user.polls);
   });
 };
+
 exports.createPoll = function(req, res, next) {
   var userId = req.user._id;
   var poll = req.body;
@@ -144,6 +146,32 @@ exports.removePoll = function(req, res, next) {
       });
   });
 };
+
+exports.updateVotes = function(req, res, next) {
+    var userId = req.params.id,
+        poll = req.body;
+
+  User.findOne({
+    _id: userId
+  }, '-salt -hashedPassword', function(err, user) { // don't ever give out the password or salt
+    if (err) return next(err);
+    if (!user) return res.json(401);
+
+    for (var i = 0; i < user.polls.length; i++) {
+        if (poll.pollId === user.polls[i].pollId) {
+            user.polls[i].whoVoted = poll.whoVoted;
+            user.polls[i].pollOptions = poll.pollOptions;
+
+            user.save(function(err) {
+                if (err) return validationError(res, err);
+                res.send(200);
+            });
+            break;
+        }
+    }
+  });
+};
+
 /**
  * Authentication callback
  */

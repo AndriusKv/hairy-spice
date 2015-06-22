@@ -10,11 +10,13 @@
     <div class="container" ng-if="showPollVote">
         <div class="poll-container">
             <h2 class="h2 text-center">{{ pollQuestion }}</h2>
-            <div class="container option-container poll-vote" ng-repeat="poll in pollOptions track by $index">
-                <input type="radio">
-                <span class="input-label">{{ poll.option }}</span>
-            </div>
-            <button class="btn btn-warning">Vote</button>
+            <form ng-submit="voteOnPoll()">
+                <div class="container option-container poll-vote" ng-repeat="poll in pollOptions track by $index">
+                    <input id="{{ $index }}" name="option" type="radio">
+                    <label for="{{ $index }}" class="input-label">{{ poll.option }}</label>
+                </div>
+                <button type="submit" class="btn btn-warning">Vote</button>
+            </form>
         </div>
     </div>
     <div class="container" ng-if="showPollResults">
@@ -24,6 +26,10 @@
                 <span class="input-label">{{ poll.option }}</span>
                 <span class="input-label">{{ poll.votes }}</span>
             </div>
+            <a ng-href="{{ pollPathname }}">{{ pollLink }}</a>
         </div>
+    </div>
+    <div class="container" ng-if="notLoggedIn">
+        <p>You need to be logged in order be able to vote.</p>
     </div>
 </div>

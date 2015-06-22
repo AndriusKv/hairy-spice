@@ -1,19 +1,30 @@
 "use strict";
 
-angular.module('workspaceApp').controller('UserPollCtrl', function ($scope, $http, $routeParams, $location) {
-    var poll = [];
+angular.module('workspaceApp').controller('UserPollCtrl', function ($scope, $http, $routeParams, $location, Auth) {
+    var getCurrentUser = Auth.getCurrentUser,
+        alreadyVoted = false,
+        userId = "",
+        poll = [];
     
     $scope.showPollVote = true;
     $scope.showPollResults = false;
+    $scope.notLoggedIn = false;
     $scope.pollQuestion = "";
     $scope.pollOptions = [];
+    $scope.pollLink = "";
+    $scope.pollPathname = "";
+    
+    if (!Auth.isLoggedIn()) {
+        $scope.showPollVote = false;
+        $scope.notLoggedIn = true;
+    }
     
     $http.get('/api/users/user').success(function(users) {
         var username = $routeParams.user.toLowerCase(),
             id = parseInt($routeParams.pollId, 10),
             foundPoll = false,
             user;
-        
+            
         for (var i = 0; i < users.length; i++) {
             if (foundPoll) {
                 break;
@@ -23,8 +34,19 @@ angular.module('workspaceApp').controller('UserPollCtrl', function ($scope, $htt
             if (user.name.toLowerCase() === username) {
                 for (var j = 0; j < user.polls.length; j++) {
                     if (user.polls[j].pollId === id) {
+                        userId = user.id;
                         poll = user.polls[j];
                         foundPoll = true;
+                        
+                        for (var k = 0; k < poll.whoVoted.length; k++) {
+                            if (poll.whoVoted[k] === getCurrentUser().name.toLowerCase()) {
+                                alreadyVoted = true;
+                                $scope.showPollVote = false;
+                                $scope.showPollResults = true;
+                                break;
+                            }
+                        }
+                        
                         break;
                     }
                 }
@@ -37,15 +59,20 @@ angular.module('workspaceApp').controller('UserPollCtrl', function ($scope, $htt
         
         $scope.pollQuestion = poll.question;
         $scope.pollOptions = poll.pollOptions;
-        
-        console.log(users);
     });
-    
-    console.log($routeParams);
     
     $scope.togglePollVote = function() {
         if ($scope.showPollResults) {
             $scope.showPollResults = false;
+        }
+        
+        if (!Auth.isLoggedIn()) {
+            $scope.notLoggedIn = true;
+            return;
+        }
+        
+        if (alreadyVoted) {
+            return;
         }
         
         $scope.showPollVote = !$scope.showPollVote;
@@ -56,8 +83,27 @@ angular.module('workspaceApp').controller('UserPollCtrl', function ($scope, $htt
             $scope.showPollVote = false;
         }
         
-        $scope.showPollResults = !$scope.showPollResults;
+        if ($scope.notLoggedIn) {
+            $scope.notLoggedIn = false;
+        }
         
-        console.log(poll);
+        $scope.showPollResults = !$scope.showPollResults;
+        $scope.pollPathname = "/" + $routeParams.user.toLowerCase() + "/" + poll.pollId;
+        $scope.pollLink = location.origin + $scope.pollPathname;
+    };
+    
+    $scope.voteOnPoll = function() {
+        var options = document.getElementsByTagName("form")[0].elements["option"];
+
+        for (var i = 0; i < options.length; i++) {
+            if (options[i].checked) {
+                poll.pollOptions[i].votes += 1;
+                poll.whoVoted.push(getCurrentUser().name.toLowerCase());
+                alreadyVoted = true;
+                $scope.togglePoolResults();
+                $http.put('/api/users/' + userId, poll);
+                break;
+            }
+        }
     };
 });

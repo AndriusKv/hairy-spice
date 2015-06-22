@@ -30,6 +30,11 @@
     background-color: rgba(221, 221, 221, .8);
     cursor: pointer;
 }
+.created-poll-result {
+    padding: 4px;
+    border: 1px solid rgba(221, 221, 221, .8);
+    border-radius: 6px;
+}
 .created-poll-result .input-label {
     float: left;
 }
