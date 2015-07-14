@@ -19,6 +19,7 @@
             </form>
         </div>
     </div>
+    <p class="voted-msg" ng-show="showVotedMessage">You already voted.</p>
     <div class="container" ng-if="showPollResults">
         <div class="poll-container">
             <h2 class="h2 text-center">{{ pollQuestion }}</h2>

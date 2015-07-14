@@ -5,7 +5,7 @@ angular.module('workspaceApp').controller('DashboardCtrl', function ($scope, $ht
         id = 0;
     
     $scope.showNewPoll = true;
-    $scope.showPollManage = false;
+    $scope.showAllUserPolls = false;
     $scope.showYourPoll = false;
     $scope.pollCreated = false;
     $scope.pollPathname = "";
@@ -18,11 +18,7 @@ angular.module('workspaceApp').controller('DashboardCtrl', function ($scope, $ht
         $scope.createdPolls = polls;
     });
     
-    $scope.togglePollCreation = function() {
-        if ($scope.showPollManage) {
-            $scope.showPollManage = false;
-        }
-        
+    $scope.resetPollForm = function() {
         if ($scope.showYourPoll) {
             $scope.showYourPoll = false;
         }
@@ -31,27 +27,27 @@ angular.module('workspaceApp').controller('DashboardCtrl', function ($scope, $ht
             $scope.pollPathname = "";
             $scope.pollLink = "";
             $scope.pollCreated = false;
+        }  
+    };
+    
+    $scope.showPollCreation = function() {
+        if ($scope.showAllUserPolls) {
+            $scope.showAllUserPolls = false;
         }
         
-        $scope.showNewPoll = !$scope.showNewPoll;
+        $scope.resetPollForm();
+        
+        $scope.showNewPoll = true;
     };
       
-    $scope.togglePollManage = function() {
+    $scope.showPollManager = function() {
         if ($scope.showNewPoll) {
             $scope.showNewPoll = false;
         }
+
+        $scope.resetPollForm();
         
-        if ($scope.showYourPoll) {
-            $scope.showYourPoll = false;
-        }
-        
-        if ($scope.pollCreated) {
-            $scope.pollPathname = "";
-            $scope.pollLink = "";
-            $scope.pollCreated = false;
-        }
-        
-        $scope.showPollManage = !$scope.showPollManage;
+        $scope.showAllUserPolls = true;
         
         $http.get('/api/users/me/polls').success(function(polls) {
             $scope.createdPolls = polls;
@@ -61,11 +57,11 @@ angular.module('workspaceApp').controller('DashboardCtrl', function ($scope, $ht
     $scope.showCreatedPoll = function(index) {
         var poll = $scope.createdPolls[index];
 
-        if ($scope.showPollManage) {
-            $scope.showPollManage = false;
+        if ($scope.showAllUserPolls) {
+            $scope.showAllUserPolls = false;
         }
         
-        $scope.showYourPoll = !$scope.showYourPoll;
+        $scope.showYourPoll = true;
         
         $scope.pollQuestion = poll.question;
         $scope.pollOptions = poll.pollOptions;

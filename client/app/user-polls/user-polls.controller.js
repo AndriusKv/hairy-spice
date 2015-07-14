@@ -6,6 +6,7 @@ angular.module('workspaceApp').controller('UserPollCtrl', function ($scope, $htt
         userId = "",
         poll = [];
     
+    $scope.showVotedMessage = false;
     $scope.showPollVote = true;
     $scope.showPollResults = false;
     $scope.notLoggedIn = false;
@@ -72,10 +73,11 @@ angular.module('workspaceApp').controller('UserPollCtrl', function ($scope, $htt
         }
         
         if (alreadyVoted) {
+            $scope.showVotedMessage = true;
             return;
         }
         
-        $scope.showPollVote = !$scope.showPollVote;
+        $scope.showPollVote = true;
     };
     
     $scope.togglePoolResults = function() {
@@ -87,7 +89,11 @@ angular.module('workspaceApp').controller('UserPollCtrl', function ($scope, $htt
             $scope.notLoggedIn = false;
         }
         
-        $scope.showPollResults = !$scope.showPollResults;
+        if ($scope.showVotedMessage) {
+            $scope.showVotedMessage = false;
+        }
+        
+        $scope.showPollResults = true;
         $scope.pollPathname = "/" + $routeParams.user.toLowerCase() + "/" + poll.pollId;
         $scope.pollLink = location.origin + $scope.pollPathname;
     };

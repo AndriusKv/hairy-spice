@@ -3,8 +3,8 @@
     <header class="hero-unit" id="banner">
         <div class="container">
             <h1>Dashboard</h1>
-            <button class="btn btn-success" ng-click="togglePollCreation()">Create New Poll</button>
-            <button class="btn btn-info" ng-click="togglePollManage()">Manage Polls</button>
+            <button class="btn btn-success" ng-click="showPollCreation()">Create New Poll</button>
+            <button class="btn btn-info" ng-click="showPollManager()">Manage Polls</button>
         </div>
     </header>
     <div class="container" ng-if="showNewPoll">
@@ -27,7 +27,7 @@
             </div>
         </div>
     </div>
-    <div class="container" ng-if="showPollManage">
+    <div class="container" ng-if="showAllUserPolls">
         <div class="poll-container">
                 <h2 class="h2 text-center">Your created polls</h2>
                 <div class="container option-container created-poll" ng-repeat="poll in createdPolls track by $index">
