@@ -1,6 +1,6 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 <div ng-controller="DashboardCtrl">
-    <header class="hero-unit" id="banner">
+    <header class="hero-unit">
         <div class="container">
             <h1>Dashboard</h1>
             <button class="btn btn-success" ng-click="showPollCreation()">Create New Poll</button>
@@ -29,21 +29,21 @@
     </div>
     <div class="container" ng-if="showAllUserPolls">
         <div class="poll-container">
-                <h2 class="h2 text-center">Your created polls</h2>
-                <div class="container option-container created-poll" ng-repeat="poll in createdPolls track by $index">
-                    <span class="input-label" ng-click="showCreatedPoll($index)">{{ poll.question }}</span>
-                    <button class="btn btn-danger" ng-click="deleteCreatedPoll(poll, $index)">Delete</button>
-                </div>
+            <h2 class="h2 text-center">Your created polls</h2>
+            <div class="container option-container created-poll" ng-repeat="poll in createdPolls track by $index">
+                <span class="input-label" ng-click="showCreatedPoll($index)">{{ poll.question }}</span>
+                <button class="btn btn-danger" ng-click="deleteCreatedPoll(poll, $index)">Delete</button>
+            </div>
         </div>
     </div>
     <div class="container" ng-if="showYourPoll">
         <div class="poll-container">
-                <h2 class="h2 text-center">{{ pollQuestion }}</h2>
-                <div class="container option-container created-poll-result" ng-repeat="poll in pollOptions track by $index">
-                    <span class="input-label">{{ poll.option }}</span>
-                    <span class="input-label">{{ poll.votes }}</span>
-                </div>
-                <a ng-href="{{ pollPathname }}">{{ pollLink }}</a>
+            <h2 class="h2 text-center">{{ pollQuestion }}</h2>
+            <div class="container option-container created-poll-result" ng-repeat="poll in pollOptions track by $index">
+                <span class="input-label">{{ poll.option }}</span>
+                <span class="input-label">{{ poll.votes }}</span>
+            </div>
+            <a ng-href="{{ pollPathname }}">{{ pollLink }}</a>
         </div>
     </div>
     <div class="container" ng-if="pollCreated">
