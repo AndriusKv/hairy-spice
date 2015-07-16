@@ -1,3 +1,6 @@
+.hero-unit.dashboard {
+    margin-top: -20px;
+}
 .poll-container {
     width: 50%;
     min-width: 320px;
@@ -24,10 +27,10 @@
     padding: 4px;
     border: 1px solid #ddd;
     border-radius: 6px;
+    line-height: 2.5;
 }
-.created-poll:hover {
-    background-color: #ddd;
-    background-color: rgba(221, 221, 221, .8);
+.created-poll .input-label:hover {
+    text-decoration: underline;
     cursor: pointer;
 }
 .created-poll-result {

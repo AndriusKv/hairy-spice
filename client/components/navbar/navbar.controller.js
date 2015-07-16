@@ -1,7 +1,6 @@
 'use strict';
 
-angular.module('workspaceApp')
-  .controller('NavbarCtrl', function ($scope, $location, Auth) {
+angular.module('workspaceApp').controller('NavbarCtrl', function($scope, $location, Auth) {
     $scope.menu = [{
       'title': 'Home',
       'link': '/' }];
@@ -20,3 +19,4 @@ angular.module('workspaceApp')
       return route === $location.path();
     };
   });
+  
