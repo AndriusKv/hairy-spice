@@ -1,15 +1,25 @@
 <header class="hero-unit" id="banner">
-  <div class="container">
-    <h1>Fast Voting</h1>
-    <p class="lead">Fast. Simple. Easy.</p>
-    <a href="/login" ng-hide="isLoggedIn()"><button class="btn btn-info btn-lg">Login</button></a>
-    <a href="/signup" ng-hide="isLoggedIn()"><button class="btn btn-success btn-lg">Sign up</button></a>
-    <a href="/dashboard" ng-show="isLoggedIn()"><button class="btn btn-info btn-lg">Dashboard</button></a>
-    <a ng-show="isLoggedIn()" ng-click="logout()"><button class="btn btn-danger btn-lg">Logout</button></a>
-  </div>
+    <div class="container">
+        <h1>Fast Voting</h1>
+        <p class="lead">Fast. Simple. Easy.</p>
+        <a href="/login" ng-hide="isLoggedIn()"><button class="btn btn-info btn-lg">Login</button></a>
+        <a href="/signup" ng-hide="isLoggedIn()"><button class="btn btn-success btn-lg">Sign up</button></a>
+        <a href="/dashboard" ng-show="isLoggedIn()"><button class="btn btn-info btn-lg">Dashboard</button></a>
+        <a ng-show="isLoggedIn()" ng-click="logout()"><button class="btn btn-danger btn-lg">Logout</button></a>
+    </div>
 </header>
+<aside class="running-polls-container">
+    <h4>Currently running polls:</h4>
+    <ul class="running-polls">
+        <li ng-repeat="poll in runningPolls">
+            <a href="{{ poll.linkToPoll }}">
+                <span>{{ poll.question }}</span>
+            </a>
+        </li>
+    </ul>
+</aside>
 <footer class="footer">
-  <div class="container">
-      <p>FreeCodeCamp Basejump | <a href="https://twitter.com/andriuskv">@andriuskv</a></p>
-  </div>
+    <div class="container">
+        <p>FreeCodeCamp Basejump | <a href="https://twitter.com/andriuskv">@andriuskv</a></p>
+    </div>
 </footer>

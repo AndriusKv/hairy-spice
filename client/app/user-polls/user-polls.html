@@ -1,36 +1,30 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
-<div ng-controller="UserPollCtrl">
-    <header class="hero-unit" id="banner">
-        <div class="container">
-            <h1>Dashboard</h1>
-            <button class="btn btn-success" ng-click="togglePollVote()">Vote</button>
-            <button class="btn btn-info" ng-click="togglePoolResults()">Show Results</button>
-        </div>
-    </header>
-    <div class="container" ng-if="showPollVote">
-        <div class="poll-container">
-            <h2 class="h2 text-center">{{ pollQuestion }}</h2>
-            <form ng-submit="voteOnPoll()">
-                <div class="container option-container poll-vote" ng-repeat="poll in pollOptions track by $index">
-                    <input id="{{ $index }}" name="option" type="radio">
-                    <label for="{{ $index }}" class="input-label">{{ poll.option }}</label>
-                </div>
-                <button type="submit" class="btn btn-warning">Vote</button>
-            </form>
-        </div>
+<header class="hero-unit" id="banner">
+    <div class="container">
+        <h1>Dashboard</h1>
+        <button class="btn btn-success" ng-click="togglePollVote()">Vote</button>
+        <button class="btn btn-info" ng-click="togglePoolResults()">Show Results</button>
+    </div>
+</header>
+<div class="container">
+    <div class="poll-container" ng-show="showPollVote">
+        <h2 class="h2 text-center">{{ pollQuestion }}</h2>
+        <form ng-submit="voteOnPoll()">
+            <div class="container option-container poll-vote" ng-repeat="poll in pollOptions track by $index">
+                <input id="{{ $index }}" name="option" type="radio">
+                <label for="{{ $index }}" class="input-label">{{ poll.option }}</label>
+            </div>
+            <button type="submit" class="btn btn-warning">Vote</button>
+        </form>
     </div>
     <p class="voted-msg" ng-show="showVotedMessage">You already voted.</p>
-    <div class="container" ng-if="showPollResults">
-        <div class="poll-container">
-            <h2 class="h2 text-center">{{ pollQuestion }}</h2>
-            <div class="container option-container created-poll-result" ng-repeat="poll in pollOptions track by $index">
-                <span class="input-label">{{ poll.option }}</span>
-                <span class="input-label">{{ poll.votes }}</span>
-            </div>
-            <a ng-href="{{ pollPathname }}">{{ pollLink }}</a>
+    <div class="poll-container" ng-show="showPollResults">
+        <h2 class="h2 text-center">{{ pollQuestion }}</h2>
+        <div class="container option-container created-poll-result" ng-repeat="poll in pollOptions track by $index">
+            <span class="input-label">{{ poll.option }}</span>
+            <span class="input-label">{{ poll.votes }}</span>
         </div>
+        <a ng-href="{{ pollPathname }}">{{ pollLink }}</a>
     </div>
-    <div class="container" ng-if="notLoggedIn">
-        <p>You need to be logged in order be able to vote.</p>
-    </div>
+    <p class="not-logged-in-msg" ng-show="notLoggedIn">You need to be logged in order be able to vote.</p>
 </div>

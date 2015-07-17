@@ -1,5 +1,10 @@
-.voted-msg {
+.voted-msg, .not-logged-in-msg {
     margin-top: 20px;
-    font-size: 28px;
     text-align: center;
+}
+.voted-msg {
+    font-size: 28px;
+}
+.not-logged-in-msg {
+    font-size: 24px;
 }

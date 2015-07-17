@@ -2,12 +2,13 @@
 
 angular.module('workspaceApp').controller('UserPollCtrl', function ($scope, $http, $routeParams, $location, Auth) {
     var getCurrentUser = Auth.getCurrentUser,
+        isLoggedIn = Auth.isLoggedIn(),
         alreadyVoted = false,
         userId = "",
         poll = [];
     
     $scope.showVotedMessage = false;
-    $scope.showPollVote = true;
+    $scope.showPollVote = false;
     $scope.showPollResults = false;
     $scope.notLoggedIn = false;
     $scope.pollQuestion = "";
@@ -15,11 +16,33 @@ angular.module('workspaceApp').controller('UserPollCtrl', function ($scope, $htt
     $scope.pollLink = "";
     $scope.pollPathname = "";
     
-    if (!Auth.isLoggedIn()) {
-        $scope.showPollVote = false;
-        $scope.notLoggedIn = true;
+    function displayLinkToPoll() {
+        $scope.pollPathname = "/" + $routeParams.user.toLowerCase() + "/" + poll.pollId;
+        $scope.pollLink = location.origin + $scope.pollPathname;
     }
     
+    function checkIfVoted() {
+        if (isLoggedIn) {
+            for (var i = 0; i < poll.whoVoted.length; i++) {
+                if (poll.whoVoted[i] === getCurrentUser().name.toLowerCase()) {
+                    alreadyVoted = true;
+                    $scope.showPollVote = false;
+                    $scope.showPollResults = true;
+                    break;
+                }
+            }
+            
+            if (!alreadyVoted) {
+                $scope.showPollVote = true;
+                $scope.showPollResults = false;
+            }
+        }
+        else {
+            $scope.showPollVote = false;
+            $scope.showPollResults = true;
+        }
+    }
+
     $http.get('/api/users/user').success(function(users) {
         var username = $routeParams.user.toLowerCase(),
             id = parseInt($routeParams.pollId, 10),
@@ -27,30 +50,26 @@ angular.module('workspaceApp').controller('UserPollCtrl', function ($scope, $htt
             user;
             
         for (var i = 0; i < users.length; i++) {
+            
             if (foundPoll) {
                 break;
             }
-            
             user = users[i];
+            
             if (user.name.toLowerCase() === username) {
+                
                 for (var j = 0; j < user.polls.length; j++) {
+                    
                     if (user.polls[j].pollId === id) {
                         userId = user.id;
                         poll = user.polls[j];
                         foundPoll = true;
-                        
-                        for (var k = 0; k < poll.whoVoted.length; k++) {
-                            if (poll.whoVoted[k] === getCurrentUser().name.toLowerCase()) {
-                                alreadyVoted = true;
-                                $scope.showPollVote = false;
-                                $scope.showPollResults = true;
-                                break;
-                            }
-                        }
-                        
+                        displayLinkToPoll();
+                        checkIfVoted();
                         break;
                     }
                 }
+                break;
             }
         }
         
@@ -63,11 +82,12 @@ angular.module('workspaceApp').controller('UserPollCtrl', function ($scope, $htt
     });
     
     $scope.togglePollVote = function() {
+        
         if ($scope.showPollResults) {
             $scope.showPollResults = false;
         }
         
-        if (!Auth.isLoggedIn()) {
+        if (!isLoggedIn) {
             $scope.notLoggedIn = true;
             return;
         }
@@ -81,6 +101,7 @@ angular.module('workspaceApp').controller('UserPollCtrl', function ($scope, $htt
     };
     
     $scope.togglePoolResults = function() {
+        
         if ($scope.showPollVote) {
             $scope.showPollVote = false;
         }
@@ -94,14 +115,15 @@ angular.module('workspaceApp').controller('UserPollCtrl', function ($scope, $htt
         }
         
         $scope.showPollResults = true;
-        $scope.pollPathname = "/" + $routeParams.user.toLowerCase() + "/" + poll.pollId;
-        $scope.pollLink = location.origin + $scope.pollPathname;
+        displayLinkToPoll();
     };
+    
     
     $scope.voteOnPoll = function() {
         var options = document.getElementsByTagName("form")[0].elements["option"];
 
         for (var i = 0; i < options.length; i++) {
+            
             if (options[i].checked) {
                 poll.pollOptions[i].votes += 1;
                 poll.whoVoted.push(getCurrentUser().name.toLowerCase());
