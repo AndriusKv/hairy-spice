@@ -1,3 +1,10 @@
+.poll-result-container {
+    text-align: center;
+}
+.poll-result-container .poll-container {
+    display: inline-block;
+    vertical-align: top;
+}
 .voted-msg, .not-logged-in-msg {
     margin-top: 20px;
     text-align: center;
@@ -7,4 +14,9 @@
 }
 .not-logged-in-msg {
     font-size: 24px;
+}
+#bar-chart {
+    display: inline-block;
+    margin-top: 54px;
+    margin-left: 10px;
 }

@@ -1,9 +1,9 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
-<header class="hero-unit" id="banner">
+<header class="hero-unit dashboard-header">
     <div class="container">
         <h1>Dashboard</h1>
         <button class="btn btn-success" ng-click="togglePollVote()">Vote</button>
-        <button class="btn btn-info" ng-click="togglePoolResults()">Show Results</button>
+        <button class="btn btn-info" ng-click="togglePoolResults()">Results</button>
     </div>
 </header>
 <div class="container">
@@ -18,13 +18,18 @@
         </form>
     </div>
     <p class="voted-msg" ng-show="showVotedMessage">You already voted.</p>
-    <div class="poll-container" ng-show="showPollResults">
-        <h2 class="h2 text-center">{{ pollQuestion }}</h2>
-        <div class="container option-container created-poll-result" ng-repeat="poll in pollOptions track by $index">
-            <span class="input-label">{{ poll.option }}</span>
-            <span class="input-label">{{ poll.votes }}</span>
+    <div class="container" ng-show="showPollResults">
+        <div class="poll-result-container">
+            <div class="poll-container">
+                <h2 class="h2 text-center">{{ pollQuestion }}</h2>
+                <div class="container option-container created-poll-result" ng-repeat="poll in pollOptions track by $index">
+                    <span class="input-label">{{ poll.option }}</span>
+                    <span class="input-label">{{ poll.votes }}</span>
+                </div>
+                <a ng-href="{{ pollPathname }}">{{ pollLink }}</a>
+            </div>
+            <canvas id="bar-chart" width="320" height="280"></canvas>
         </div>
-        <a ng-href="{{ pollPathname }}">{{ pollLink }}</a>
     </div>
-    <p class="not-logged-in-msg" ng-show="notLoggedIn">You need to be logged in order be able to vote.</p>
+    <p class="not-logged-in-msg" ng-show="notLoggedIn">You need to be logged in to vote.</p>
 </div>

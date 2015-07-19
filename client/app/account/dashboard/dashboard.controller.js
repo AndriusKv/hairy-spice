@@ -1,6 +1,6 @@
 "use strict";
 
-angular.module('workspaceApp').controller('DashboardCtrl', function ($scope, $http, Auth) {
+angular.module('workspaceApp').controller('DashboardCtrl', function ($scope, $http, $location, Auth) {
     var getCurrentUser = Auth.getCurrentUser,
         id = 0;
     
@@ -11,6 +11,8 @@ angular.module('workspaceApp').controller('DashboardCtrl', function ($scope, $ht
     $scope.pollPathname = "";
     $scope.pollLink = "";
     $scope.pollQuestionInput = "";
+    $scope.pollQuestion = "";
+    $scope.pollOptions = [];
     $scope.createdPolls = [];
     $scope.options = [1, 2];
 
@@ -56,18 +58,8 @@ angular.module('workspaceApp').controller('DashboardCtrl', function ($scope, $ht
     
     $scope.showCreatedPoll = function(index) {
         var poll = $scope.createdPolls[index];
-
-        if ($scope.showAllUserPolls) {
-            $scope.showAllUserPolls = false;
-        }
         
-        $scope.showYourPoll = true;
-        
-        $scope.pollQuestion = poll.question;
-        $scope.pollOptions = poll.pollOptions;
-        
-        $scope.pollPathname = "/" + getCurrentUser().name.toLowerCase() + "/" + poll.pollId;
-        $scope.pollLink = location.host + $scope.pollPathname;
+        $location.path("/" + getCurrentUser().name.toLowerCase() + "/" + poll.pollId);
     };
     
     $scope.addOption = function() {
@@ -80,7 +72,6 @@ angular.module('workspaceApp').controller('DashboardCtrl', function ($scope, $ht
         var polls = $scope.createdPolls,
             question = pollQuestion,
             options = document.querySelectorAll(".option-input"),
-            newPoll = {},
             pollOptions = [];
         
         if (question === '' || options[0].value === "" || options[1].value === "") {
@@ -103,17 +94,18 @@ angular.module('workspaceApp').controller('DashboardCtrl', function ($scope, $ht
             }
         }
         
-        newPoll.pollId = ++id;
-        newPoll.question = question;
-        newPoll.pollOptions = pollOptions;
-        newPoll.whoVoted = [];
-        
+        id += 1;
         $scope.pollPathname = "/" + getCurrentUser().name.toLowerCase() + "/" + id;
         $scope.pollLink = location.host + $scope.pollPathname;
         $scope.showNewPoll = false;
         $scope.pollCreated = true;
         $scope.options.length = 2;
-        $http.post('/api/users/me/polls', newPoll);
+        $http.post('/api/users/me/polls', {
+            pollId: id,
+            question: question,
+            pollOptions: pollOptions,
+            whoVoted: []
+        });
     };
     
     $scope.deleteCreatedPoll = function(poll, index) {

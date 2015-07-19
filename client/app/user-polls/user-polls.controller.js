@@ -1,6 +1,6 @@
 "use strict";
 
-angular.module('workspaceApp').controller('UserPollCtrl', function ($scope, $http, $routeParams, $location, Auth) {
+angular.module('workspaceApp').controller('UserPollCtrl', function ($scope, $http, $routeParams, $location, Auth, chartFactory) {
     var getCurrentUser = Auth.getCurrentUser,
         isLoggedIn = Auth.isLoggedIn(),
         alreadyVoted = false,
@@ -9,7 +9,7 @@ angular.module('workspaceApp').controller('UserPollCtrl', function ($scope, $htt
     
     $scope.showVotedMessage = false;
     $scope.showPollVote = false;
-    $scope.showPollResults = false;
+    $scope.showPollResults = true;
     $scope.notLoggedIn = false;
     $scope.pollQuestion = "";
     $scope.pollOptions = [];
@@ -23,23 +23,9 @@ angular.module('workspaceApp').controller('UserPollCtrl', function ($scope, $htt
     
     function checkIfVoted() {
         if (isLoggedIn) {
-            for (var i = 0; i < poll.whoVoted.length; i++) {
-                if (poll.whoVoted[i] === getCurrentUser().name.toLowerCase()) {
-                    alreadyVoted = true;
-                    $scope.showPollVote = false;
-                    $scope.showPollResults = true;
-                    break;
-                }
-            }
-            
-            if (!alreadyVoted) {
-                $scope.showPollVote = true;
-                $scope.showPollResults = false;
-            }
-        }
-        else {
-            $scope.showPollVote = false;
-            $scope.showPollResults = true;
+            alreadyVoted = poll.whoVoted.some(function(name) {
+               return name === getCurrentUser().name.toLowerCase();
+            });
         }
     }
 
@@ -79,6 +65,9 @@ angular.module('workspaceApp').controller('UserPollCtrl', function ($scope, $htt
         
         $scope.pollQuestion = poll.question;
         $scope.pollOptions = poll.pollOptions;
+        
+        chartFactory.generateChart(poll.pollOptions);
+        
     });
     
     $scope.togglePollVote = function() {
@@ -129,6 +118,7 @@ angular.module('workspaceApp').controller('UserPollCtrl', function ($scope, $htt
                 poll.whoVoted.push(getCurrentUser().name.toLowerCase());
                 alreadyVoted = true;
                 $scope.togglePoolResults();
+                chartFactory.generateChart(poll.pollOptions);
                 $http.put('/api/users/' + userId, poll);
                 break;
             }

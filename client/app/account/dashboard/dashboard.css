@@ -1,9 +1,9 @@
-.hero-unit.dashboard {
+.dashboard-header {
     margin-top: -20px;
 }
 .poll-container {
     width: 50%;
-    min-width: 320px;
+    min-width: 310px;
     margin: 0 auto;
 }
 .option-container {
@@ -27,7 +27,7 @@
     padding: 4px;
     border: 1px solid #ddd;
     border-radius: 6px;
-    line-height: 2.5;
+    line-height: 2;
 }
 .created-poll .input-label:hover {
     text-decoration: underline;

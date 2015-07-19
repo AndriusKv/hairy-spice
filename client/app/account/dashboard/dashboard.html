@@ -1,56 +1,37 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
-<div ng-controller="DashboardCtrl">
-    <header class="hero-unit dashboard">
-        <div class="container">
-            <h1>Dashboard</h1>
-            <button class="btn btn-success" ng-click="showPollCreation()">Create New Poll</button>
-            <button class="btn btn-info" ng-click="showPollManager()">Manage Polls</button>
+<header class="hero-unit dashboard-header">
+    <div class="container">
+        <h1>Dashboard</h1>
+        <button class="btn btn-success" ng-click="showPollCreation()">Create New Poll</button>
+        <button class="btn btn-info" ng-click="showPollManager()">Manage Polls</button>
+    </div>
+</header>
+<div class="container">
+    <div class="poll-container" ng-if="showNewPoll">
+        <h2 class="h2 text-center">New Poll</h2>
+        <div class="form-group">
+            <label for="poll-name">Question</label>
+            <input type="text" class="form-control" id="poll-name" placeholder="type your question here" ng-model="pollQuestionInput" required>
         </div>
-    </header>
-    <div class="container" ng-if="showNewPoll">
-        <div class="row">
-            <div class="poll-container">
-                <h2 class="h2 text-center">New Poll</h2>
-                <div class="form-group">
-                    <label for="poll-name">Question</label>
-                    <input type="text" class="form-control" id="poll-name" placeholder="type your question here" ng-model="pollQuestionInput" required>
-                </div>
-                <div class="form-group">
-                    <div class="container option-container">
-                        <span class="input-title">Options</span>
-                        <button class="btn btn-default btn-xs" ng-click="addOption()">More Options</button>
-                    </div>
-                    <input type="text" class="form-control option-input" placeholder="enter poll option"
-                        ng-repeat="option in options">
-                </div>
-                <button class="btn btn-success" ng-click="createPoll(pollQuestionInput)">Create</button>
+        <div class="form-group">
+            <div class="container option-container">
+                <span class="input-title">Options</span>
+                <button class="btn btn-default btn-xs" ng-click="addOption()">More Options</button>
             </div>
+            <input type="text" class="form-control option-input" placeholder="enter poll option" ng-repeat="option in options">
+        </div>
+        <button class="btn btn-success" ng-click="createPoll(pollQuestionInput)">Create</button>
+    </div>
+    <div class="poll-container" ng-show="showAllUserPolls">
+        <h2 class="h2 text-center">Your created polls</h2>
+        <div class="container option-container created-poll" ng-repeat="poll in createdPolls track by $index">
+            <span class="input-label" ng-click="showCreatedPoll($index)">{{ poll.question }}</span>
+            <button class="btn btn-danger btn-sm" ng-click="deleteCreatedPoll(poll, $index)">Delete</button>
         </div>
     </div>
-    <div class="container" ng-if="showAllUserPolls">
-        <div class="poll-container">
-            <h2 class="h2 text-center">Your created polls</h2>
-            <div class="container option-container created-poll" ng-repeat="poll in createdPolls track by $index">
-                <span class="input-label" ng-click="showCreatedPoll($index)">{{ poll.question }}</span>
-                <button class="btn btn-danger" ng-click="deleteCreatedPoll(poll, $index)">Delete</button>
-            </div>
-        </div>
-    </div>
-    <div class="container" ng-if="showYourPoll">
-        <div class="poll-container">
-            <h2 class="h2 text-center">{{ pollQuestion }}</h2>
-            <div class="container option-container created-poll-result" ng-repeat="poll in pollOptions track by $index">
-                <span class="input-label">{{ poll.option }}</span>
-                <span class="input-label">{{ poll.votes }}</span>
-            </div>
-            <a ng-href="{{ pollPathname }}">{{ pollLink }}</a>
-        </div>
-    </div>
-    <div class="container" ng-if="pollCreated">
-        <div class="poll-container">
-            <h2 class="h2 text-center">Congratulations!</h2>
-            <p>Your poll has been created at: </p>
-            <a ng-href="{{ pollPathname }}">{{ pollLink }}</a>
-        </div>
+    <div class="poll-container" ng-show="pollCreated">
+        <h2 class="h2 text-center">Congratulations!</h2>
+        <p>Your poll has been created at: </p>
+        <a ng-href="{{ pollPathname }}">{{ pollLink }}</a>
     </div>
 </div>
